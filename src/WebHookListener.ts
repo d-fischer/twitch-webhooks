@@ -113,6 +113,7 @@ export default class WebHookListener {
 		this._server.listen(this._config.port);
 
 		for (const [, sub] of this._subscriptions) {
+			// tslint:disable-next-line:no-floating-promises
 			sub.start();
 		}
 	}
@@ -126,6 +127,7 @@ export default class WebHookListener {
 		this._server = undefined;
 
 		for (const [, sub] of this._subscriptions) {
+			// tslint:disable-next-line:no-floating-promises
 			sub.stop();
 		}
 	}
