@@ -1,6 +1,6 @@
 {
   "name": "twitch-webhooks",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Listen to events on Twitch via their WebHooks API.",
   "main": "lib",
   "types": "lib/index",
