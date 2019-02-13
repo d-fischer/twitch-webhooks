@@ -16,7 +16,7 @@ export default class UserChangeSubscription extends Subscription<HelixUser> {
 		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserChanges(this._userId, this._options);
 	}
 
-	transformData(data: HelixResponse<HelixUserData>) {
-		return new HelixUser(data.data[0], this._client._twitchClient);
+	transformData(response: HelixResponse<HelixUserData>) {
+		return new HelixUser(response.data[0], this._client._twitchClient);
 	}
 }

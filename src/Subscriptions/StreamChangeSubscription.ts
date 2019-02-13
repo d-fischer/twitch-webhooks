@@ -3,7 +3,7 @@ import { HelixResponse, HelixStream } from 'twitch';
 import WebHookListener from '../WebHookListener';
 import { HelixStreamData } from 'twitch/lib/API/Helix/Stream/HelixStream';
 
-export default class StreamChangeSubscription extends Subscription<HelixStream> {
+export default class StreamChangeSubscription extends Subscription<HelixStream | null> {
 	constructor(private readonly _userId: string, handler: (data: HelixStream) => void, client: WebHookListener) {
 		super(handler, client);
 	}
@@ -16,7 +16,10 @@ export default class StreamChangeSubscription extends Subscription<HelixStream> 
 		return this._client._twitchClient.helix.webHooks.unsubscribeFromStreamChanges(this._userId, this._options);
 	}
 
-	transformData(data: HelixResponse<HelixStreamData>) {
-		return new HelixStream(data.data[0], this._client._twitchClient);
+	transformData(response: HelixResponse<HelixStreamData>) {
+		if (!response.data.length) {
+			return null;
+		}
+		return new HelixStream(response.data[0], this._client._twitchClient);
 	}
 }

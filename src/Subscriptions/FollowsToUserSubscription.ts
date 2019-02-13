@@ -16,7 +16,7 @@ export default class FollowsToUserSubscription extends Subscription<HelixFollow>
 		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserFollowsTo(this._userId, this._options);
 	}
 
-	transformData(data: HelixResponse<HelixFollowData>) {
-		return new HelixFollow(data.data[0], this._client._twitchClient);
+	transformData(response: HelixResponse<HelixFollowData>) {
+		return new HelixFollow(response.data[0], this._client._twitchClient);
 	}
 }

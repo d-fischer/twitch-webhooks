@@ -4,7 +4,8 @@ import * as randomstring from 'randomstring';
 import * as crypto from 'crypto';
 import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
 
-export default abstract class Subscription<T extends object = object> {
+// tslint:disable-next-line:no-any
+export default abstract class Subscription<T = any> {
 	private _verified: boolean = false;
 	protected _id?: string;
 	protected _secret: string;
@@ -86,5 +87,5 @@ export default abstract class Subscription<T extends object = object> {
 
 	protected abstract _unsubscribe(): Promise<void>;
 
-	abstract transformData(data: object): T;
+	abstract transformData(response: object): T;
 }
