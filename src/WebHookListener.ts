@@ -4,10 +4,10 @@ import { PolkaRequest, PolkaResponse } from 'polka';
 // tslint:disable-next-line:no-duplicate-imports factory method is namespace root
 import * as polka from 'polka';
 import * as https from 'https';
-import TwitchClient, { HelixFollow, HelixStream, HelixUser } from 'twitch';
-import Subscription from './Subscriptions/Subscription';
+import TwitchClient, { extractUserId, HelixFollow, HelixStream, HelixUser, UserIdResolvable } from 'twitch';
 import * as getRawBody from 'raw-body';
-import UserTools, { UserIdResolvable } from 'twitch/lib/Toolkit/UserTools';
+
+import Subscription from './Subscriptions/Subscription';
 import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
 import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
 import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
@@ -148,7 +148,7 @@ export default class WebHookListener {
 	}
 
 	async subscribeToUserChanges(user: UserIdResolvable, handler: (user: HelixUser) => void, withEmail: boolean = false) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		const subscription = new UserChangeSubscription(userId, handler, withEmail, this);
 		await subscription.start();
@@ -158,7 +158,7 @@ export default class WebHookListener {
 	}
 
 	async subscribeToFollowsToUser(user: UserIdResolvable, handler: (follow: HelixFollow) => void) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		const subscription = new FollowsToUserSubscription(userId, handler, this);
 		await subscription.start();
@@ -168,7 +168,7 @@ export default class WebHookListener {
 	}
 
 	async subscribeToFollowsFromUser(user: UserIdResolvable, handler: (follow: HelixFollow) => void) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		const subscription = new FollowsFromUserSubscription(userId, handler, this);
 		await subscription.start();
@@ -178,7 +178,7 @@ export default class WebHookListener {
 	}
 
 	async subscribeToStreamChanges(user: UserIdResolvable, handler: (follow: HelixStream) => void) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		const subscription = new StreamChangeSubscription(userId, handler, this);
 		await subscription.start();
